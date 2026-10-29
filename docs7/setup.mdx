@@ -1,0 +1,160 @@
+---
+title: GitHub and Copilot setup
+description: Prepare your fork, sign in with GitHub CLI, and connect Copilot to current documentation.
+---
+
+Set up the tutorial in your own fork before working through the exercises.
+Run terminal commands from a checkout of the repository. Prompts beginning
+with a slash belong in Copilot chat.
+
+## GitHub CLI
+
+### 1. Sign in
+
+For the tutorial's interactive web login, clear token overrides in this
+terminal and start authentication:
+
+```bash
+unset GH_TOKEN GITHUB_TOKEN
+gh auth login --hostname github.com --git-protocol https --web
+```
+
+Complete authorization in the browser and wait for the terminal prompt to
+return. Then check the signed-in account:
+
+```bash
+gh auth status --hostname github.com
+```
+
+The `unset` command affects this shell only. Use this interactive flow in
+your development terminal; automation may use its existing token configuration.
+
+### 2. Choose your fork
+
+**If you already use RepoKan/virtual-universe-26**, skip fork creation. From
+its local checkout, check the remote before setting the defaults:
+
+```bash
+git remote -v
+gh auth setup-git
+gh repo set-default RepoKan/virtual-universe-26
+gh repo set-default --view
+gh repo edit RepoKan/virtual-universe-26 --enable-issues
+```
+
+Confirm that your working checkout and push remote point to the intended
+fork before creating issues or pushing changes.
+
+**If you are starting from the upstream tutorial and do not have a fork**,
+run the original setup sequence after signing in:
+
+```bash
+gh auth setup-git &&
+gh repo fork --remote &&
+gh repo set-default "$(git remote get-url origin)" &&
+gh repo edit --enable-issues
+```
+
+Check the remote and selected default repository before continuing:
+
+```bash
+git remote -v
+gh repo set-default --view
+```
+
+To copy a command on GitHub, hover over its code block and click the copy
+button at the top right. In a Codespace, press **Ctrl + backtick** to toggle
+the terminal.
+
+## Copilot and Context7
+
+The Copilot learning path is **Skills → Tools and connectors → Security
+review → Automate**. The following instructions use the Copilot app UI.
+Other clients can have different menus, agent support, and MCP configuration.
+
+### 1. Find the documentation agent
+
+Paste this into Copilot chat:
+
+```text
+/agentfinder find the Context7 Expert custom agent in github/awesome-copilot for looking up current library documentation
+```
+
+Review the result. You can inspect the
+[Context7 Expert agent source](https://github.com/github/awesome-copilot/blob/main/agents/context7.agent.md)
+before adding it. Search results and agent compatibility can vary.
+
+### 2. Add the agent
+
+Paste this into Copilot chat:
+
+```text
+Add the Context7 Expert agent from github/awesome-copilot to this project. Check compatibility with this app and use the keyless Context7 connector with its current resolve-library-id and query-docs tools. Ask before installing or changing its configuration. Keep this session open.
+```
+
+Confirm that the installed agent uses the connector's currently exposed
+tools, `resolve-library-id` and `query-docs`. If the source still refers to
+an older tool such as `get-library-docs`, review the compatibility change
+before applying it.
+
+### 3. Add the Context7 MCP connector
+
+In the Copilot app:
+
+1. Open **Customize** at the top of the sessions sidebar.
+2. Search for **Context7**, select the server, and choose **Add server**.
+3. Select **HTTP** and review the default settings.
+4. Return to your session.
+
+The remote MCP endpoint is `https://mcp.context7.com/mcp`. The repository
+tutorial reports that it was tested without an API key; keyless availability,
+rate limits, and app or organization policy can vary. Check the
+[current Context7 client instructions](https://context7.com/docs/resources/all-clients)
+if authentication is requested. Never paste credentials into a public issue,
+pull request, or documentation page.
+
+Test the agent and connector with a public documentation query:
+
+```text
+Use the Context7 Expert agent and the Context7 MCP connector to find how Node.js reads a UTF-8 file with node:fs/promises. Show a short example and its documentation source. Send only this public documentation query, not repository contents. If the agent or connector isn't available in this session, tell me; don't substitute web search.
+```
+
+Look for an actual Context7 tool call and a linked Node.js documentation
+source. Installing a connector does not prove that a lookup succeeded.
+
+### 4. Use documentation lookup in the skill
+
+Open `.github/skills/issue-to-pr/SKILL.md` and add this before the step that
+makes the fix:
+
+```markdown
+When a fix needs library or API documentation, use the Context7 Expert
+agent and Context7 MCP connector to look it up. Send only public
+documentation queries, not repository contents. Cite relevant sources
+in the draft PR. If the agent or connector is unavailable, report it
+instead of claiming the lookup succeeded.
+```
+
+Alternatively, ask Copilot to prepare the edit:
+
+```text
+Update .github/skills/issue-to-pr/SKILL.md to use the Context7 Expert agent and connector when a fix needs library or API documentation. Send only public documentation queries, cite relevant sources in the draft PR, and report unavailable tools instead of pretending a lookup succeeded. Show me the edit; don't commit or push yet.
+```
+
+Review the edit before proceeding with your exercise. A documentation lookup
+does not replace project tests or a security review.
+
+## Continue learning
+
+- [Create and run a skill](https://github.com/RepoKan/virtual-universe-26/tree/main/02-github-copilot-latest-features/skills)
+- [Tools and connectors](https://github.com/RepoKan/virtual-universe-26/tree/main/02-github-copilot-latest-features/tools-and-connectors)
+- [Security review](https://github.com/RepoKan/virtual-universe-26/tree/main/02-github-copilot-latest-features/security-review)
+- [Automate](https://github.com/RepoKan/virtual-universe-26/tree/main/02-github-copilot-latest-features/automate)
+
+## Sources
+
+- [Repository GitHub CLI setup](https://github.com/RepoKan/virtual-universe-26/blob/main/01-github-latest-features/README.md)
+- [Repository tools and connectors exercise](https://github.com/RepoKan/virtual-universe-26/blob/main/02-github-copilot-latest-features/tools-and-connectors/README.md)
+- [GitHub CLI authentication reference](https://cli.github.com/manual/gh_auth_login)
+- [GitHub CLI fork reference](https://cli.github.com/manual/gh_repo_fork)
+- [Context7 client configuration and tool names](https://context7.com/docs/resources/all-clients)

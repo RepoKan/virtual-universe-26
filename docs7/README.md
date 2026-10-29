@@ -1,6 +1,12 @@
 # Docs7 starter
 
-This folder contains the Docs7 configuration and introductory page for RepoKan/virtual-universe-26.
+This folder contains the Docs7 configuration, introductory page, and GitHub/Copilot setup guide for RepoKan/virtual-universe-26.
+
+## Pages
+
+- `index.mdx`: repository introduction and learning links.
+- `setup.mdx`: GitHub CLI, fork defaults, Copilot agent, Context7 connector, and skill instructions.
+- `docs.json`: site identity and navigation.
 
 ## Local preview
 

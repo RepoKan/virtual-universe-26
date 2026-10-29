@@ -9,7 +9,8 @@
       {
         "group": "Guide",
         "pages": [
-          "index"
+          "index",
+          "setup"
         ]
       }
     ]

@@ -7,6 +7,60 @@ Set up the tutorial in your own fork before working through the exercises.
 Run terminal commands from a checkout of the repository. Prompts beginning
 with a slash belong in Copilot chat.
 
+## Codespaces and the installer
+
+The exercises run in GitHub Codespaces, which installs the tooling for you.
+The repository ships a dev container per exercise, for example
+`.devcontainer/devcontainer.json` and
+`.devcontainer/attach-images-to-an-issue/devcontainer.json`. Your only
+prerequisite is a GitHub account with access to your fork.
+
+Each dev container uses the `mcr.microsoft.com/devcontainers/base:ubuntu`
+image with the `github-cli` feature and runs
+`.devcontainer/setup.sh` as its `onCreateCommand`:
+
+```bash
+# .devcontainer/setup.sh
+gh extension install github/gh-stack   # only if gh-stack is missing
+git config --global rerere.enabled true
+git config --global remote.pushDefault origin
+```
+
+The comment in each `devcontainer.json` notes that this runs during the
+prebuild, so a new Codespace starts with the GitHub CLI and `gh-stack`
+already installed. The stack exercise relies on `gh-stack`, and
+`remote.pushDefault origin` is why `gh stack submit` pushes to your fork.
+
+Verify the installer result in the Codespace terminal:
+
+```bash
+gh --version
+gh extension list
+git config --global --get remote.pushDefault
+```
+
+If `gh extension list` does not show `github/gh-stack`, run the installer
+yourself:
+
+```bash
+bash .devcontainer/setup.sh
+```
+
+### Run the exercises locally
+
+Prefer your own machine? Install the same pieces:
+
+- [GitHub CLI](https://cli.github.com) (`gh`)
+- [`gh-stack`](https://github.com/github/gh-stack): `gh extension install github/gh-stack`
+- Git, for the `rerere` and `remote.pushDefault` settings
+
+Clone your fork, then run the installer from the repository root:
+
+```bash
+gh extension install github/gh-stack
+bash .devcontainer/setup.sh
+```
+
 ## GitHub CLI
 
 ### 1. Sign in
@@ -153,6 +207,7 @@ does not replace project tests or a security review.
 
 ## Sources
 
+- [Dev container installer](https://github.com/RepoKan/virtual-universe-26/blob/main/.devcontainer/setup.sh)
 - [Repository GitHub CLI setup](https://github.com/RepoKan/virtual-universe-26/blob/main/01-github-latest-features/README.md)
 - [Repository tools and connectors exercise](https://github.com/RepoKan/virtual-universe-26/blob/main/02-github-copilot-latest-features/tools-and-connectors/README.md)
 - [GitHub CLI authentication reference](https://cli.github.com/manual/gh_auth_login)

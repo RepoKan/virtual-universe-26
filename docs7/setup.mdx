@@ -112,9 +112,8 @@ run the original setup sequence after signing in:
 
 ```bash
 gh auth setup-git &&
-gh repo fork --remote &&
-gh repo set-default "$(git remote get-url origin)" &&
-gh repo edit --enable-issues
+gh repo fork --remote --remote-name origin &&
+gh repo set-default origin
 ```
 
 Check the remote and selected default repository before continuing:
@@ -122,6 +121,13 @@ Check the remote and selected default repository before continuing:
 ```bash
 git remote -v
 gh repo set-default --view
+```
+
+Confirm that `origin` and the selected default repository identify your fork.
+Then enable issues on that fork:
+
+```bash
+gh repo edit --enable-issues
 ```
 
 To copy a command on GitHub, hover over its code block and click the copy
@@ -222,4 +228,5 @@ does not replace project tests or a security review.
 - [Repository tools and connectors exercise](https://github.com/RepoKan/virtual-universe-26/blob/main/02-github-copilot-latest-features/tools-and-connectors/README.md)
 - [GitHub CLI authentication reference](https://cli.github.com/manual/gh_auth_login)
 - [GitHub CLI fork reference](https://cli.github.com/manual/gh_repo_fork)
+- [GitHub CLI default repository reference](https://cli.github.com/manual/gh_repo_set-default)
 - [Context7 client configuration and tool names](https://context7.com/docs/resources/all-clients)

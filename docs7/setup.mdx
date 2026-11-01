@@ -7,6 +7,68 @@ Set up the tutorial in your own fork before working through the exercises.
 Run terminal commands from a checkout of the repository. Prompts beginning
 with a slash belong in Copilot chat.
 
+## Codespaces and the installer
+
+The exercises run in GitHub Codespaces, which installs the tooling for you.
+The repository ships a dev container per exercise, for example
+`.devcontainer/devcontainer.json` and
+`.devcontainer/attach-images-to-an-issue/devcontainer.json`. You need a
+GitHub account with access to your fork and permission to create Codespaces
+for it.
+
+Each dev container uses the `mcr.microsoft.com/devcontainers/base:ubuntu`
+image with the `github-cli` feature and runs
+`.devcontainer/setup.sh` through its `onCreateCommand`.
+
+The installer checks whether the `github/gh-stack` extension is already
+installed and installs it only if missing. It also sets
+`rerere.enabled=true` and `remote.pushDefault=origin` globally.
+
+Each dev container invokes the setup script during environment creation.
+When GitHub creates a Codespaces prebuild for the relevant repository,
+branch, and dev container configuration, it runs this command before
+saving the container snapshot. Prebuild configuration and a ready prebuild
+have not been independently verified for this repository.
+
+The stack exercise relies on `gh-stack`. The script sets the push default
+to `origin`; confirm that `origin` points to your fork before submitting.
+
+Verify the installer result in the Codespace terminal:
+
+```bash
+gh --version
+gh extension list
+gh stack --help
+git config --global --get rerere.enabled
+git config --global --get remote.pushDefault
+```
+
+The Git settings above should print `true` and `origin`, respectively.
+These checks verify the current environment, not whether a prebuild was used.
+
+If `gh extension list` does not show `github/gh-stack`, run the installer
+from the repository root:
+
+```bash
+bash .devcontainer/setup.sh
+```
+
+### Run the exercises locally
+
+Prefer your own machine? Install the same pieces:
+
+- [GitHub CLI](https://cli.github.com) (`gh`)
+- [`gh-stack`](https://github.com/github/gh-stack), installed by the setup
+  script if it is missing
+- Git, for the `rerere` and `remote.pushDefault` settings
+
+Complete the GitHub CLI sign-in steps below if needed. Clone your fork,
+then run the installer from the repository root:
+
+```bash
+bash .devcontainer/setup.sh
+```
+
 ## GitHub CLI
 
 ### 1. Sign in
@@ -153,6 +215,9 @@ does not replace project tests or a security review.
 
 ## Sources
 
+- [GitHub Codespaces prebuilds](https://docs.github.com/en/codespaces/prebuilding-your-codespaces/about-github-codespaces-prebuilds)
+- [GitHub CLI extension installation reference](https://cli.github.com/manual/gh_extension_install)
+- [Dev container installer](https://github.com/RepoKan/virtual-universe-26/blob/main/.devcontainer/setup.sh)
 - [Repository GitHub CLI setup](https://github.com/RepoKan/virtual-universe-26/blob/main/01-github-latest-features/README.md)
 - [Repository tools and connectors exercise](https://github.com/RepoKan/virtual-universe-26/blob/main/02-github-copilot-latest-features/tools-and-connectors/README.md)
 - [GitHub CLI authentication reference](https://cli.github.com/manual/gh_auth_login)

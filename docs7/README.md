@@ -14,7 +14,7 @@ The root `.coderabbit.config.ts` selects the `chill` profile only when CodeRabbi
 
 For each pull request, inspect CodeRabbit's run configuration and review coverage at the latest head SHA. A successful review with no actionable comments is separate from a submitted approval and authorization to merge. Skipped or cancelled checks are not approvals.
 
-GitHub integration authentication is separate from local CodeRabbit CLI authentication. Docs7 deployment checks do not verify Codespaces Prebuild readiness or installer execution.
+GitHub integration authentication is separate from local CodeRabbit CLI authentication. The documented Codespaces installer checks do not verify Codespaces Prebuild readiness or establish that the installer ran; inspect creation logs separately.
 
 ## Local preview
 

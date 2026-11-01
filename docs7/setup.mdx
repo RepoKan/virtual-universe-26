@@ -51,8 +51,10 @@ container configuration path, and the command outputs. Keep creation-log
 confirmation of `onCreateCommand` separate from the resulting tool and Git
 settings; those outputs alone do not establish which lifecycle command ran.
 
-Stop the Codespace when you finish testing. Stopping retains its files;
-delete a disposable Codespace separately when you no longer need it.
+Stop the Codespace when you finish testing. Workspace files and saved changes
+persist, but files in `/tmp` are cleared when the Codespace stops. Save
+verification records in the workspace before stopping. Delete a disposable
+Codespace separately when you no longer need it.
 
 If `gh extension list` does not show `github/gh-stack`, run the installer
 from the repository root:

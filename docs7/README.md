@@ -8,6 +8,14 @@ This folder contains the Docs7 configuration, introductory page, and GitHub/Copi
 - `setup.mdx`: GitHub CLI, fork defaults, Copilot agent, Context7 connector, and skill instructions.
 - `docs.json`: site identity and navigation.
 
+## Code review
+
+The root `.coderabbit.config.ts` selects the `chill` profile only when CodeRabbit resolves a nonempty changed-file list entirely under `docs7/`. Other changes, or unavailable changed-file metadata, select `assertive`.
+
+For each pull request, inspect CodeRabbit's run configuration and review coverage at the latest head SHA. A successful review with no actionable comments is separate from a submitted approval and authorization to merge. Skipped or cancelled checks are not approvals.
+
+GitHub integration authentication is separate from local CodeRabbit CLI authentication. Docs7 deployment checks do not verify Codespaces Prebuild readiness or installer execution.
+
 ## Local preview
 
 Use Node.js 20.19 or newer. From the repository root:

@@ -46,6 +46,14 @@ git config --global --get remote.pushDefault
 The Git settings above should print `true` and `origin`, respectively.
 These checks verify the current environment, not whether a prebuild was used.
 
+For a verification record, include `git rev-parse HEAD`, the selected dev
+container configuration path, and the command outputs. Keep creation-log
+confirmation of `onCreateCommand` separate from the resulting tool and Git
+settings; those outputs alone do not establish which lifecycle command ran.
+
+Stop the Codespace when you finish testing. Stopping retains its files;
+delete a disposable Codespace separately when you no longer need it.
+
 If `gh extension list` does not show `github/gh-stack`, run the installer
 from the repository root:
 

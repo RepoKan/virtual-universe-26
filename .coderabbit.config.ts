@@ -16,6 +16,16 @@ export default defineConfig((ctx) => {
       profile: docsOnly ? "chill" : "assertive",
       poem: false,
 
+      // AI approval never replaces human review, required CI, or owner authorization.
+      auto_review: {
+        enabled: true,
+      },
+      auto_approvals: {
+        enabled: true,
+        allow_author_approval: false,
+        max_merge_risk: "low",
+      },
+
       path_instructions: [
         {
           path: "docs7/**",

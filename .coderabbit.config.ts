@@ -39,6 +39,8 @@ export default defineConfig((ctx) => {
               ".devcontainer/**",
               ".vscode/**",
               ".agents/**",
+              ".copilot/**",
+              "mcp_config.json",
               "AGENTS.md",
               "**/AGENTS.md",
               "CODEOWNERS",

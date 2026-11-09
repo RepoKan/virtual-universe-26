@@ -1,6 +1,6 @@
-import { defineConfig } from "@coderabbitai/config";
+import { defineConfig, type CodeRabbitConfig } from "@coderabbitai/config";
 
-export default defineConfig((ctx) => {
+export default defineConfig((ctx): CodeRabbitConfig => {
   const changedFiles = ctx.pr?.changedFiles;
 
   const docsOnly =

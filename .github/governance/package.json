@@ -1,0 +1,9 @@
+{
+  "name": "coderabbit-official-sdk-check",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@coderabbitai/config": "1.2.0",
+    "typescript": "7.0.2"
+  }
+}

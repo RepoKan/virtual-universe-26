@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>World Clock</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-alt: #1f2937;
+      --line: rgba(148, 163, 184, 0.25);
+      --text: #e5e7eb;
+      --muted: #a5b4cf;
+      --accent: #34d399;
+      --accent-2: #60a5fa;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at top, rgba(52, 211, 153, 0.18), transparent 35%),
+        linear-gradient(135deg, #020817 0%, #0f172a 50%, #111827 100%);
+      color: var(--text);
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    .clock {
+      width: min(90vw, 760px);
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.86);
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(8px);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: clamp(1.5rem, 2vw, 2.2rem);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .date {
+      color: var(--muted);
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .timezone {
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(31, 41, 55, 0.9), rgba(17, 24, 39, 0.9));
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .time {
+      font-size: clamp(1.7rem, 2vw, 2.5rem);
+      font-weight: 700;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      letter-spacing: 0.04em;
+      color: white;
+    }
+
+    .offset {
+      font-size: 0.88rem;
+      color: var(--accent-2);
+      letter-spacing: 0.04em;
+    }
+  </style>
+</head>
+<body>
+  <main class="clock" aria-live="polite">
+    <div class="header">
+      <h1>World Clock</h1>
+      <div class="date" id="date-label"></div>
+    </div>
+
+    <div class="grid">
+      <div class="timezone">
+        <div class="label">Local</div>
+        <div class="time" id="local-time">--:--:--</div>
+        <div class="offset" id="local-offset"></div>
+      </div>
+
+      <div class="timezone">
+        <div class="label">UTC</div>
+        <div class="time" id="utc-time">--:--:--</div>
+        <div class="offset">UTC+00:00</div>
+      </div>
+
+      <div class="timezone">
+        <div class="label">New York</div>
+        <div class="time" id="new-york-time">--:--:--</div>
+        <div class="offset" id="new-york-offset"></div>
+      </div>
+
+      <div class="timezone">
+        <div class="label">London</div>
+        <div class="time" id="london-time">--:--:--</div>
+        <div class="offset" id="london-offset"></div>
+      </div>
+
+      <div class="timezone">
+        <div class="label">Tokyo</div>
+        <div class="time" id="tokyo-time">--:--:--</div>
+        <div class="offset" id="tokyo-offset"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const timeZones = [
+      { id: 'local-time', zone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC' },
+      { id: 'utc-time', zone: 'UTC' },
+      { id: 'new-york-time', zone: 'America/New_York' },
+      { id: 'london-time', zone: 'Europe/London' },
+      { id: 'tokyo-time', zone: 'Asia/Tokyo' }
+    ];
+
+    function pad(value) {
+      return String(value).padStart(2, '0');
+    }
+
+    function getTimeZoneOffsetLabel(timeZone) {
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone,
+        timeZoneName: 'shortOffset'
+      }).formatToParts(new Date());
+
+      const offsetPart = parts.find(part => part.type === 'timeZoneName');
+      return offsetPart ? offsetPart.value : 'UTC';
+    }
+
+    function formatTime(date, timeZone) {
+      return new Intl.DateTimeFormat('en-US', {
+        timeZone,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      }).format(date);
+    }
+
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('date-label').textContent = now.toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      });
+
+      timeZones.forEach(({ id, zone }) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = formatTime(now, zone);
+      });
+
+      document.getElementById('local-offset').textContent = getTimeZoneOffsetLabel(timeZones[0].zone);
+      document.getElementById('new-york-offset').textContent = getTimeZoneOffsetLabel('America/New_York');
+      document.getElementById('london-offset').textContent = getTimeZoneOffsetLabel('Europe/London');
+      document.getElementById('tokyo-offset').textContent = getTimeZoneOffsetLabel('Asia/Tokyo');
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+</body>
+</html>

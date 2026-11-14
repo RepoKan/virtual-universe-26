@@ -1,6 +1,6 @@
-Security Policy
+# Security Policy
 
-1. Overview
+## 1. Overview
 
 This security policy applies to RepoKan/virtual-universe-26, a public repository containing educational materials, examples, configurations, and workflows related to GitHub features, GitHub Copilot, agentic development, automation, and software engineering.
 
@@ -8,19 +8,20 @@ We welcome responsible security reports and contributions that improve the safet
 
 Security reports and pull request approvals are separate processes. A security report, automated review, or passing CI check does not independently authorize a code change or merge.
 
-2. Supported Versions
+## 2. Supported Versions
 
-Version / Branch	Security Review Status
-main (current default branch)	Primary review target
-Active development branches	Reviewed case by case
-Historical commits and archived examples	Best-effort evaluation
-External forks and third-party dependencies	Subject to their respective maintainers and security policies
+| Version / Branch | Security Review Status |
+| --- | --- |
+| main (current default branch) | Primary review target |
+| Active development branches | Reviewed case by case |
+| Historical commits and archived examples | Best-effort evaluation |
+| External forks and third-party dependencies | Subject to their respective maintainers and security policies |
 
 This repository does not currently declare a formal version-based security maintenance schedule.
 
 Security reports should identify the affected branch, commit SHA, file, or component wherever possible.
 
-3. Reporting a Vulnerability
+## 3. Reporting a Vulnerability
 
 Do not disclose suspected vulnerabilities publicly before they have been responsibly evaluated.
 
@@ -47,7 +48,7 @@ A useful security report should include:
 
 Only include information necessary for the maintainers to investigate the issue.
 
-4. Security Review and Triage
+## 4. Security Review and Triage
 
 Security reports will be evaluated according to their relevance, reproducibility, potential impact, and available evidence.
 
@@ -62,7 +63,7 @@ No fixed acknowledgment or remediation deadline is guaranteed.
 
 A report’s acceptance does not imply that a specific patch, release, or deployment date has been approved.
 
-5. Security Requirements for Changes
+## 5. Security Requirements for Changes
 
 Security-related changes must follow the repository’s applicable governance controls.
 
@@ -90,7 +91,7 @@ Repository changes remain subject to applicable owner authorization requirements
 
 Security-sensitive changes, changes to governance or access controls, and final merge decisions must not bypass required approvals.
 
-6. Sensitive Information and Secrets
+## 6. Sensitive Information and Secrets
 
 Do not commit, publish, or expose:
 
@@ -106,7 +107,7 @@ If sensitive material is discovered in repository content, report it privately a
 
 Removing a secret from the latest commit does not necessarily remove it from repository history. Exposed credentials may also require revocation or rotation.
 
-7. Third-Party Dependencies and Examples
+## 7. Third-Party Dependencies and Examples
 
 This repository includes educational examples and may reference external tools, services, libraries, and configurations.
 
@@ -123,7 +124,7 @@ Before using an example in a production environment, independently verify:
 
 Security vulnerabilities in third-party components should also be reported through the responsible upstream project’s disclosure process.
 
-8. Responsible Disclosure
+## 8. Responsible Disclosure
 
 We encourage responsible disclosure that gives maintainers an opportunity to assess and address reported vulnerabilities before detailed public publication.
 
@@ -131,7 +132,7 @@ Disclosure timing and remediation decisions should consider the impact, availabl
 
 Do not publicly release sensitive credentials, confidential data, or information that could unnecessarily expose affected users or systems.
 
-9. Governance and Policy Enforcement
+## 9. Governance and Policy Enforcement
 
 This document describes the repository’s security-reporting expectations and change-review principles.
 
@@ -148,7 +149,7 @@ These controls must be configured and verified independently through their respe
 
 Any exception to an applicable security or review requirement must follow an authorized exception process. This document does not grant exception authority.
 
-10. Policy Maintenance
+## 10. Policy Maintenance
 
 This policy should be reviewed whenever material changes affect:
 

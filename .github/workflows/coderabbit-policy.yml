@@ -1,0 +1,55 @@
+name: CodeRabbit TypeScript policy validation
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: [ci/coderabbit-ts-policy-validation-20261109]
+permissions:
+  contents: read
+jobs:
+  validate:
+    name: Validate CodeRabbit TypeScript policy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    outputs:
+      tested_sha: ${{ steps.revision.outputs.tested_sha }}
+    steps:
+      - name: Checkout exact candidate head
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Verify tested SHA
+        id: revision
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "$EXPECTED_SHA"
+          echo "tested_sha=$actual" >> "$GITHUB_OUTPUT"
+      - name: Set up Node.js 24
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Check with official SDK and dynamic policy tests
+        run: timeout 600s bash .github/governance/check_typescript.sh
+  gate:
+    name: CodeRabbit TypeScript policy gate
+    needs: [validate]
+    if: ${{ always() }}
+    runs-on: ubuntu-24.04
+    permissions: {}
+    steps:
+      - name: Fail closed on skip, failure or stale SHA
+        env:
+          RESULT: ${{ needs.validate.result }}
+          TESTED_SHA: ${{ needs.validate.outputs.tested_sha }}
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          test "$RESULT" = success
+          test -n "$TESTED_SHA"
+          test "$TESTED_SHA" = "$EXPECTED_SHA"
+          echo "PASS: policy validation ran on expected head"
